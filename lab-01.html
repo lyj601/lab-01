@@ -739,7 +739,18 @@ inter-quartile estimates are.</em></p>
 <h3>Exercise n.</h3>
 <p><em>Within each of the 4 nations, what is the proportion of tourist
 attractions that have free admission for all visitors?</em></p>
-<pre class="r"><code># Write your code here</code></pre>
+<pre class="r"><code>visitors_with_nations %&gt;%
+  group_by(nation) %&gt;%
+  summarise(
+    prop_free = mean(admission == &quot;Free&quot;)
+  )</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   nation           prop_free
+##   &lt;chr&gt;                &lt;dbl&gt;
+## 1 England              0.388
+## 2 Northern Ireland     0.111
+## 3 Scotland             0.351
+## 4 Wales                0</code></pre>
 </div>
 <div id="exercise-o." class="section level3">
 <h3>Exercise o.</h3>
@@ -747,7 +758,20 @@ attractions that have free admission for all visitors?</em></p>
 to 2022. Of the tourist attractions in Scotland, sort into increasing
 numerical order the types of admission charges based on the mean
 percentage change in visitor numbers.</em></p>
-<pre class="r"><code># Write your code here</code></pre>
+<pre class="r"><code>visitors_with_nations %&gt;%
+  mutate(pct_change = (n_2022 - n_2021) / n_2021 * 100) %&gt;%
+  filter(region == &quot;Scotland&quot;) %&gt;%
+  group_by(admission) %&gt;%
+  summarise(
+    mean_pct_change = mean(pct_change, na.rm = TRUE)
+  ) %&gt;%
+  arrange(mean_pct_change)</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   admission mean_pct_change
+##   &lt;chr&gt;               &lt;dbl&gt;
+## 1 Charged              4.65
+## 2 Members            138.  
+## 3 Free               303.</code></pre>
 </div>
 </div>
 
